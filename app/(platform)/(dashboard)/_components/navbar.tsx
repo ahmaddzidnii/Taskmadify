@@ -2,11 +2,12 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
+import MobileSidebar from "./mobile-sidebar";
 
 const Navbar = () => {
   return (
     <nav className="fixed top-0 z-50 w-full px-5 h-14 border-b shadow-sm bg-white flex items-center">
-      {/* Todo: Mobile Sidebar */}
+      <MobileSidebar/>
       <div className="flex items-center gap-x-4">
         <Logo />
         <Button size="sm" className="rounded-sm hidden md:block h-auto py-1.5 px-2">
