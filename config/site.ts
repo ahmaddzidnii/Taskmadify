@@ -1,4 +1,4 @@
 export const siteConfig = {
-  name: "Taskify",
+  name: "Taskmadify",
   description: "Task management platform",
 };
