@@ -8,14 +8,22 @@ import { CreateBoard } from "./schema";
 import { prisma } from "@/lib/db";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth();
-  if (!userId) {
+  const { userId, orgId } = auth();
+  if (!userId || !orgId) {
     return {
       error: "Unauthorized",
     };
   }
 
-  const { title } = data;
+  const { title, image } = data;
+
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHtml, imageUserName] = image.split("|");
+
+  if (!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHtml || !imageUserName) {
+    return {
+      error: "Missing fields. Failed to create board",
+    };
+  }
 
   let board;
 
@@ -23,6 +31,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await prisma?.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageFullUrl,
+        imageUserName,
+        imageLinkHtml,
       },
     });
   } catch (error) {
