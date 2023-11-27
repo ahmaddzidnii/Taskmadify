@@ -8,6 +8,8 @@ import { createBoard } from "@/actions/create-board";
 import { X } from "lucide-react";
 import { FormInput } from "./form-input";
 import { FormSubmit } from "./form-submit";
+import { toast } from "sonner";
+import { FormPicker } from "./form-picker";
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -19,10 +21,10 @@ interface FormPopoverProps {
 export const FormPopover = ({ children, side = "bottom", align, sideOffset = 0 }: FormPopoverProps) => {
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
-      console.log(data);
+      toast.success(`Berhasil membuat "${data.title}" board`);
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(error);
     },
   });
 
@@ -43,6 +45,7 @@ export const FormPopover = ({ children, side = "bottom", align, sideOffset = 0 }
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
+            <FormPicker id="image" errors={fieldErrors}/>
             <FormInput id="title" label="Board title" type="text" errors={fieldErrors} />
             <FormSubmit className="w-full">Create</FormSubmit>
           </div>

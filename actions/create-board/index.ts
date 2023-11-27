@@ -5,6 +5,7 @@ import { InputType, ReturnType } from "./types";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateBoard } from "./schema";
+import { prisma } from "@/lib/db";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth();

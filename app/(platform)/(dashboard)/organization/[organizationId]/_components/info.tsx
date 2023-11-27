@@ -6,8 +6,7 @@ import { CreditCard } from "lucide-react";
 import Image from "next/image";
 export const Info = () => {
   const { isLoaded, organization } = useOrganization();
-  console.log(organization);
-
+  
   if (!isLoaded) return <Info.Skeleton />;
   return (
     <div className="flex items-center gap-x-4">
