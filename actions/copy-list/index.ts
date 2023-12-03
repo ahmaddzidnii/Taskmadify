@@ -22,18 +22,59 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   let list;
 
   try {
-    list = await prisma.list.delete({
-      where: {
+    const listToCopy = await prisma.list.findUnique({
+      where:{
         id,
         boardId,
-        board: {
+        board:{
           orgId,
-        },
+        }
       },
-    });
+      include:{
+        cards: true
+      }
+    })
+
+    if(!listToCopy){
+      return {
+        error: "List not found"
+      }
+    }
+
+    const lastList = await prisma.list.findFirst({
+      where:{boardId},
+      orderBy:{
+        order:"desc",
+      },
+      select:{
+        order:true,
+      }
+    })
+
+    const newOrder = lastList ? lastList.order + 1 : 1;
+
+    list = await prisma.list.create({
+      data:{
+        boardId: listToCopy.boardId,
+        title: `Copy of ${listToCopy.title}`,
+        order: newOrder,
+        cards:{
+          createMany:{
+            data: listToCopy.cards.map(card => ({
+              title: card.title,
+              description: card.description,
+              order: card.order
+            }))
+          }
+        }
+      },
+      include:{
+        cards: true,
+      }
+    })
   } catch (error) {
     return {
-      error: "Failed to delete.",
+      error: "Failed to copy.",
     };
   }
 

@@ -11,6 +11,7 @@ import { ListOptions } from "./list-options";
 
 interface ListHeaderProps {
   data: List;
+  onAddCard: () => void;
 }
 export const ListHeader = ({ data }: ListHeaderProps) => {
   const [title, setTitle] = useState(data.title);
@@ -33,7 +34,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
 
   const { execute } = useAction(updateList, {
     onSuccess: (data) => {
-      toast.success(`Successfully renamed to "${data.title}"!`);
+      toast.success(`Berhasil mengganti judul menjadi "${data.title}"!`);
       setTitle(data.title);
       disableEditting();
     },

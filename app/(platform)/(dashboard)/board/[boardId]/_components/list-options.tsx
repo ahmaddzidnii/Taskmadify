@@ -1,15 +1,16 @@
 import { List } from "@prisma/client";
 import { MoreHorizontal, X } from "lucide-react";
+import { toast } from "sonner";
+import { ElementRef, useRef } from "react";
 
 import { useAction } from "@/hooks/use-action";
+import { copyList } from "@/actions/copy-list";
+import { deleteList } from "@/actions/delete-list";
 
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { FormSubmit } from "@/components/form/form-submit";
 import { Separator } from "@/components/ui/separator";
-import { deleteList } from "@/actions/delete-list";
-import { toast } from "sonner";
-import { ElementRef, useRef } from "react";
 
 interface ListOptionsProps {
   data: List;
@@ -20,7 +21,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
 
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess(data) {
-      toast.success(`List "${data.title}" has been deleted!`);
+      toast.success(`List "${data.title}" telah dihapus!`);
       closeRef.current?.click();
     },
     onError(error) {
@@ -28,6 +29,21 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
     },
   });
 
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess(data) {
+      toast.success(`List "${data.title}"berhasil di copy!`);
+      closeRef.current?.click();
+    },
+    onError(error) {
+      toast.error(error);
+    },
+  });
+
+  const onCopy = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+    executeCopy({ id, boardId });
+  };
   const onDelete = (formData: FormData) => {
     const id = formData.get("id") as string;
     const boardId = formData.get("boardId") as string;
@@ -50,7 +66,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
         <Button onClick={onAddCard} className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm" variant="ghost">
           Add Card..
         </Button>
-        <form>
+        <form action={onCopy}>
           <input hidden name="id" id="id" value={data.id} />
           <input hidden name="boardId" id="boardId" value={data.boardId} />
           <FormSubmit variant="ghost" className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm">

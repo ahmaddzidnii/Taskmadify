@@ -36,7 +36,7 @@ export const ListForm = () => {
 
   const { execute, fieldErrors } = useAction(createList, {
     onSuccess: (data) => {
-      toast.success(`List has been created!`);
+      toast.success(`List telah berhasil di buat!`);
       disableEditting();
       router.refresh();
     },
@@ -65,7 +65,7 @@ export const ListForm = () => {
     return (
       <ListWrapper>
         <form action={onSubmit} ref={formRef} className="w-full p-3 rounded-md bg-white space-y-4 shadow-md">
-          <FormInput id="title" ref={inputRef} errors={fieldErrors} className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input transition" placeholder="Enter list title" />
+          <FormInput id="title" ref={inputRef} errors={fieldErrors} className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input transition" placeholder="Masukkan judul list" />
           <input hidden value={params.boardId} name="boardId" />
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add List</FormSubmit>
@@ -82,7 +82,7 @@ export const ListForm = () => {
     <ListWrapper>
       <button className="w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm" onClick={enableEditing}>
         <Plus className="h-4 w-4 mr-2" />
-        Add a list
+        Tambahkan list
       </button>
     </ListWrapper>
   );
