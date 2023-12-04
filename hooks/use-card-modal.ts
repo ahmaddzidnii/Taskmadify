@@ -7,9 +7,9 @@ type CardModalStore = {
   onClose: () => void;
 };
 
-export const useMobileSidebar = create<CardModalStore>((set) => ({
+export const useCardModal = create<CardModalStore>((set) => ({
   id: undefined,
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
+  onOpen: (id: string) => set({ isOpen: true, id }),
   onClose: () => set({ isOpen: false, id: undefined }),
 }));
