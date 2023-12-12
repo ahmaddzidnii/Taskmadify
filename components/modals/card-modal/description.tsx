@@ -46,7 +46,7 @@ export const Description = ({ data }: DescriptionProps) => {
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
-  const { execute } = useAction(updateCard, {
+  const { execute,fieldErrors } = useAction(updateCard, {
     onSuccess(data) {
       queryCLient.invalidateQueries({
         queryKey: ["cards", data.id],
@@ -72,7 +72,7 @@ export const Description = ({ data }: DescriptionProps) => {
         <p className="font-semibold text-neutral-700 mb-2">Description</p>
         {isEditing ? (
           <form action={onSubmit} ref={formRef} className="space-y-2">
-            <FormTextarea ref={textareaRef} id="description" className="w-full mt-2" placeholder="Tambahkan deskripsi" defaultValue={data.description || undefined} />
+            <FormTextarea ref={textareaRef} id="description" className="w-full mt-2" placeholder="Tambahkan deskripsi" defaultValue={data.description || undefined} errors={fieldErrors} />
             <div className="flex justify-start items-center">
               <FormSubmit>Simpan</FormSubmit>
               <Button type="button" variant="ghost" onClick={disableEditing}>
